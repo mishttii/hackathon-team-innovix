@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Details - Campus Event Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .event-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1557b0 100%);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .event-header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-meta {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .meta-item {
+      border-left: 4px solid var(--primary);
+      padding-left: 15px;
+    }
+
+    .meta-label {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .meta-value {
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .event-details {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      border-top: 4px solid var(--primary);
+      margin-bottom: 30px;
+    }
+
+    .event-details h2 {
+      color: var(--primary);
+      font-size: 24px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 10px;
+    }
+
+    .event-details h3 {
+      color: var(--secondary);
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .event-details p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+      padding: 14px !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+    }
+
+    .btn-register {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+      box-shadow: 0 2px 8px rgba(26, 115, 232, 0.2) !important;
+    }
+
+    .btn-register:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(26, 115, 232, 0.35) !important;
+    }
+
+    .btn-back {
+      background: linear-gradient(135deg, var(--neutral-medium), #d0d4d9) !important;
+      color: var(--text-primary) !important;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, #d0d4d9, #bdc1c7) !important;
+    }
+
+    .attendance-info {
+      background: linear-gradient(135deg, var(--primary-light) 0%, rgba(0, 191, 165, 0.05) 100%);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .attendance-info p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    /* District Section */
+    .district-highlight {
+      background: linear-gradient(135deg, var(--secondary) 0%, #e65100 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 4px 12px rgba(255, 109, 0, 0.2);
+    }
+
+    .district-icon-large {
+      font-size: 40px;
+    }
+
+    .district-info h3 {
+      margin: 0 0 5px 0;
+      color: white;
+      font-size: 18px;
+    }
+
+    .district-info p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+    }
+
+    /* Related Events Section */
+    .related-section {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 2px solid var(--neutral-medium);
+    }
+
+    .related-section h3 {
+      color: var(--text-primary);
+      font-size: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .related-events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .related-event-card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid var(--primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .related-event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(26, 115, 232, 0.15);
+    }
+
+    .related-event-card h4 {
+      color: var(--primary);
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .related-event-card p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin: 5px 0;
+    }
+
+    .related-event-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary-light) 0%, rgba(0, 191, 165, 0.05) 100%);
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .district-selector-section {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .district-selector-title {
+      font-size: 16px;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .district-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 10px;
+    }
+
+    .district-mini-card {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .district-mini-card input {
+      display: none;
+    }
+
+    .district-mini-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border: 2px solid var(--neutral-medium);
+      border-radius: 8px;
+      text-align: center;
+      background: #fafbfc;
+      color: var(--text-primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .district-mini-icon {
+      font-size: 22px;
+    }
+
+    .district-mini-card input:checked + .district-mini-label {
+      background: linear-gradient(135deg, var(--primary), #1557b0);
+      color: white;
+      border-color: var(--primary);
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
+    }
+
+    .district-mini-label:hover {
+      border-color: var(--primary);
+      background: rgba(26, 115, 232, 0.05);
+    }
+
+    @media (max-width: 600px) {
+      .district-highlight {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .related-events-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .district-mini-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo">📅</div>
+        <span>Campus Event Portal</span>
+      </div>
+      <div class="search-container">
+        <input type="text" id="search" class="search-bar" placeholder="🔍 Search events...">
+      </div>
+    </div>
+  </header>
+
+  <div class="event-header" id="eventHeader"></div>
+
+  <div class="container">
+    <div class="event-meta" id="eventMeta"></div>
+
+    <!-- District Highlight Section -->
+    <div class="district-highlight" id="districtHighlight"></div>
+
+    <div class="event-details" id="details"></div>
+
+    <div class="attendance-info">
+      <p>✅ Registered attendees will receive event updates and reminders via email</p>
+    </div>
+
+    <!-- District Selector for Related Events -->
+    <div class="district-selector-section" id="districtSelector"></div>
+
+    <!-- Related Events Section -->
+    <div class="related-section" id="relatedSection"></div>
+
+    <div class="action-buttons">
+      <button class="btn-register" onclick="register()">Register Now</button>
+      <button class="btn-back" onclick="goBack()">Back to Events</button>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script>
+    const id = localStorage.getItem("eventId");
+    const event = events.find(e => e.id == id);
+
+    if (event) {
+      // Event Header
+      document.getElementById("eventHeader").innerHTML = `
+        <h1>${event.title}</h1>
+        <p>${event.category || 'Event'}</p>
+      `;
+
+      // Event Meta Info
+      document.getElementById("eventMeta").innerHTML = `
+        <div class="meta-item">
+          <div class="meta-label">📅 Date</div>
+          <div class="meta-value">${event.date}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">📍 Venue</div>
+          <div class="meta-value">${event.venue}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">👥 Capacity</div>
+          <div class="meta-value">${event.capacity || 'Unlimited'}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">🏷️ Category</div>
+          <div class="meta-value">${event.category || 'General'}</div>
+        </div>
+      `;
+
+      // District Highlight (Zomato Style)
+      const districtIcons = {
+        "North Campus": "🏫",
+        "South Campus": "🏫",
+        "East Campus": "🏫",
+        "West Campus": "🏫",
+        "Central Hall": "🏛️",
+        "Sports Complex": "⚽"
+      };
+
+      const districtIcon = districtIcons[event.district] || "📍";
+      document.getElementById("districtHighlight").innerHTML = `
+        <div class="district-icon-large">${districtIcon}</div>
+        <div class="district-info">
+          <h3>${event.district}</h3>
+          <p>📍 Event Location</p>
+        </div>
+      `;
+
+      // Event Details
+      document.getElementById("details").innerHTML = `
+        <h2>About This Event</h2>
+        <p>${event.description}</p>
+        
+        <h3>Event Details</h3>
+        <p><strong>Organizer:</strong> ${event.organizer || 'Campus Team'}</p>
+        <p><strong>Duration:</strong> ${event.duration || '2 hours'}</p>
+        
+        <h3>What to Expect</h3>
+        <p>${event.expectations || 'Join us for an amazing event experience with networking opportunities and engaging activities.'}</p>
+      `;
+
+      // District Selector for Related Events
+      document.getElementById("districtSelector").innerHTML = `
+        <div class="district-selector-title">
+          📍 Explore Events in Other Areas
+        </div>
+        <div class="district-mini-grid">
+          <div class="district-mini-card">
+            <input type="radio" id="dist-mini-north" name="explore-district" value="North Campus" onchange="showRelatedEvents()">
+            <label for="dist-mini-north" class="district-mini-label">
+              <span class="district-mini-icon">🏫</span>
+              <span>North</span>
+            </label>
+          </div>
+          <div class="district-mini-card">
+            <input type="radio" id="dist-mini-south" name="explore-district" value="South Campus" onchange="showRelatedEvents()">
+            <label for="dist-mini-south" class="district-mini-label">
+              <span class="district-mini-icon">🏫</span>
+              <span>South</span>
+            </label>
+          </div>
+          <div class="district-mini-card">
+            <input type="radio" id="dist-mini-east" name="explore-district" value="East Campus" onchange="showRelatedEvents()">
+            <label for="dist-mini-east" class="district-mini-label">
+              <span class="district-mini-icon">🏫</span>
+              <span>East</span>
+            </label>
+          </div>
+          <div class="district-mini-card">
+            <input type="radio" id="dist-mini-west" name="explore-district" value="West Campus" onchange="showRelatedEvents()">
+            <label for="dist-mini-west" class="district-mini-label">
+              <span class="district-mini-icon">🏫</span>
+              <span>West</span>
+            </label>
+          </div>
+          <div class="district-mini-card">
+            <input type="radio" id="dist-mini-central" name="explore-district" value="Central Hall" onchange="showRelatedEvents()">
+            <label for="dist-mini-central" class="district-mini-label">
+              <span class="district-mini-icon">🏛️</span>
+              <span>Central</span>
+            </label>
+          </div>
+          <div class="district-mini-card">
+            <input type="radio" id="dist-mini-sports" name="explore-district" value="Sports Complex" onchange="showRelatedEvents()">
+            <label for="dist-mini-sports" class="district-mini-label">
+              <span class="district-mini-icon">⚽</span>
+              <span>Sports</span>
+            </label>
+          </div>
+        </div>
+      `;
+
+      // Show related events in same district by default
+      showRelatedEventsInSameDistrict();
+    }
+
+    function showRelatedEventsInSameDistrict() {
+      if (!event) return;
+      const relatedEvents = events.filter(e => e.district === event.district && e.id !== event.id);
+      displayRelatedEvents(relatedEvents, `Other events in ${event.district}`);
+    }
+
+    function showRelatedEvents() {
+      const selectedDistrict = document.querySelector('input[name="explore-district"]:checked').value;
+      const relatedEvents = events.filter(e => e.district === selectedDistrict && e.id !== event.id);
+      displayRelatedEvents(relatedEvents, `Events in ${selectedDistrict}`);
+    }
+
+    function displayRelatedEvents(eventsList, title) {
+      const relatedSection = document.getElementById("relatedSection");
+
+      if (eventsList.length === 0) {
+        relatedSection.innerHTML = `
+          <h3>📭 No other events found</h3>
+          <p style="color: var(--text-secondary);">Check back later for more events in this area</p>
+        `;
+        return;
+      }
+
+      relatedSection.innerHTML = `
+        <h3>🎉 ${title}</h3>
+        <div class="related-events-grid">
+          ${eventsList.map(evt => `
+            <div class="related-event-card" onclick="viewRelatedEvent(${evt.id})">
+              <h4>${evt.title}</h4>
+              <p><strong>📅</strong> ${evt.date}</p>
+              <p><strong>📍</strong> ${evt.venue}</p>
+              <p><strong>👥</strong> Capacity: ${evt.capacity || 'Unlimited'}</p>
+              <span class="related-event-tag">${evt.category || 'Event'}</span>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function viewRelatedEvent(eventId) {
+      localStorage.setItem("eventId", eventId);
+      window.location.href = "event.html";
+    }
+
+    function register() {
+      alert("🎉 Successfully registered for " + event.title + "!");
+      // You can add additional logic here like sending data to backend
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event - Campus Event Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .create-header {
+      background: linear-gradient(135deg, var(--secondary) 0%, #e65100 100%);
+      color: white;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .create-header h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .create-header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .form-card {
+      background: white;
+      max-width: 600px;
+      margin: 0 auto 50px;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      border-top: 4px solid var(--secondary);
+    }
+
+    .form-card h2 {
+      margin-bottom: 8px;
+      color: var(--secondary);
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .form-subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+    }
+
+    .form-section h3 {
+      color: var(--primary);
+      font-size: 16px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px !important;
+      border: 2px solid var(--neutral-medium) !important;
+      border-radius: 8px !important;
+      font-size: 15px !important;
+      background-color: #fafbfc !important;
+      margin: 0 !important;
+      transition: 0.2s !important;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--secondary) !important;
+      background-color: rgba(255, 109, 0, 0.02) !important;
+      box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.1) !important;
+    }
+
+    /* District Selector - Zomato Style */
+    .district-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .district-option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .district-option input {
+      display: none;
+    }
+
+    .district-label {
+      display: block;
+      padding: 12px;
+      border: 2px solid var(--neutral-medium);
+      border-radius: 8px;
+      text-align: center;
+      background: #fafbfc;
+      color: var(--text-primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+    }
+
+    .district-option input:checked + .district-label {
+      background: linear-gradient(135deg, var(--secondary), #e65100);
+      color: white;
+      border-color: var(--secondary);
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 109, 0, 0.25);
+    }
+
+    .district-label:hover {
+      border-color: var(--secondary);
+      background: rgba(255, 109, 0, 0.05);
+    }
+
+    /* Form Row for Two Columns */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    /* Buttons */
+    .form-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 35px;
+    }
+
+    .form-buttons button {
+      flex: 1;
+      padding: 14px !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+      border: none !important;
+      cursor: pointer;
+      border-radius: 8px !important;
+      transition: all 0.3s ease !important;
+      margin: 0 !important;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--secondary), #e65100) !important;
+      color: white !important;
+      box-shadow: 0 2px 8px rgba(255, 109, 0, 0.2) !important;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(255, 109, 0, 0.35) !important;
+    }
+
+    .btn-reset {
+      background: linear-gradient(135deg, var(--neutral-medium), #d0d4d9) !important;
+      color: var(--text-primary) !important;
+    }
+
+    .btn-reset:hover {
+      background: linear-gradient(135deg, #d0d4d9, #bdc1c7) !important;
+    }
+
+    /* Success Message */
+    .success-message {
+      display: none;
+      background: rgba(52, 168, 83, 0.1);
+      border-left: 4px solid var(--success);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, var(--primary-light) 0%, rgba(0, 191, 165, 0.05) 100%);
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 25px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .form-card {
+        padding: 20px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .district-selector {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+
+      .form-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo">📅</div>
+        <span>Campus Event Portal</span>
+      </div>
+      <div class="search-container">
+        <input type="text" id="search" class="search-bar" placeholder="🔍 Search events...">
+      </div>
+    </div>
+  </header>
+
+  <div class="create-header">
+    <h1>✨ Create Your Event</h1>
+    <p>Share an amazing experience with the campus community</p>
+  </div>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>New Event Details</h2>
+      <p class="form-subtitle">Fill in the details to create your event</p>
+
+      <div class="info-box">
+        💡 <strong>Tip:</strong> Add clear details to attract more attendees to your event!
+      </div>
+
+      <div class="success-message" id="successMsg">
+        ✅ Event created successfully!
+      </div>
+
+      <form id="eventForm">
+        <!-- Basic Information -->
+        <div class="form-section">
+          <h3>📝 Basic Information</h3>
+          
+          <div class="form-group">
+            <label for="eventTitle">Event Title *</label>
+            <input type="text" id="eventTitle" placeholder="e.g., Annual Tech Conference" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="eventDesc">Event Description *</label>
+            <textarea id="eventDesc" placeholder="Describe your event in detail..." required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventCategory">Category *</label>
+              <select id="eventCategory" required>
+                <option value="">Select Category</option>
+                <option value="academic">Academic</option>
+                <option value="sports">Sports</option>
+                <option value="cultural">Cultural</option>
+                <option value="tech">Tech</option>
+                <option value="social">Social</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="eventCapacity">Capacity *</label>
+              <input type="number" id="eventCapacity" placeholder="e.g., 100" min="1" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location & District -->
+        <div class="form-section">
+          <h3>📍 Location & District</h3>
+
+          <div class="form-group full">
+            <label for="eventVenue">Venue Name *</label>
+            <input type="text" id="eventVenue" placeholder="e.g., Main Auditorium" required>
+          </div>
+
+          <div class="form-group full">
+            <label>Select District/Campus Area *</label>
+            <div class="district-selector">
+              <div class="district-option">
+                <input type="radio" id="district-north" name="district" value="North Campus" required>
+                <label for="district-north" class="district-label">🏫 North Campus</label>
+              </div>
+              <div class="district-option">
+                <input type="radio" id="district-south" name="district" value="South Campus">
+                <label for="district-south" class="district-label">🏫 South Campus</label>
+              </div>
+              <div class="district-option">
+                <input type="radio" id="district-east" name="district" value="East Campus">
+                <label for="district-east" class="district-label">🏫 East Campus</label>
+              </div>
+              <div class="district-option">
+                <input type="radio" id="district-west" name="district" value="West Campus">
+                <label for="district-west" class="district-label">🏫 West Campus</label>
+              </div>
+              <div class="district-option">
+                <input type="radio" id="district-central" name="district" value="Central Hall">
+                <label for="district-central" class="district-label">🏛️ Central Hall</label>
+              </div>
+              <div class="district-option">
+                <input type="radio" id="district-sports" name="district" value="Sports Complex">
+                <label for="district-sports" class="district-label">⚽ Sports Complex</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date & Time -->
+        <div class="form-section">
+          <h3>🕐 Date & Time</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventDate">Event Date *</label>
+              <input type="date" id="eventDate" required>
+            </div>
+
+            <div class="form-group">
+              <label for="eventTime">Start Time *</label>
+              <input type="time" id="eventTime" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="eventDuration">Duration (in hours) *</label>
+            <input type="number" id="eventDuration" placeholder="e.g., 2" min="0.5" step="0.5" required>
+          </div>
+        </div>
+
+        <!-- Additional Details -->
+        <div class="form-section">
+          <h3>🎯 Additional Details</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventOrganizer">Organizer Name *</label>
+              <input type="text" id="eventOrganizer" placeholder="Your name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="eventContact">Contact Email *</label>
+              <input type="email" id="eventContact" placeholder="your@email.com" required>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label for="eventTags">Tags (comma-separated)</label>
+            <input type="text" id="eventTags" placeholder="e.g., networking, workshop, free">
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-buttons">
+          <button type="submit" class="btn-submit">🚀 Create Event</button>
+          <button type="reset" class="btn-reset">↺ Clear Form</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script>
+    document.getElementById("eventForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      // Get form values
+      const newEvent = {
+        id: events.length + 1,
+        title: document.getElementById("eventTitle").value,
+        description: document.getElementById("eventDesc").value,
+        category: document.getElementById("eventCategory").value,
+        venue: document.getElementById("eventVenue").value,
+        district: document.querySelector('input[name="district"]:checked').value,
+        date: document.getElementById("eventDate").value,
+        time: document.getElementById("eventTime").value,
+        duration: document.getElementById("eventDuration").value,
+        capacity: document.getElementById("eventCapacity").value,
+        organizer: document.getElementById("eventOrganizer").value,
+        contact: document.getElementById("eventContact").value,
+        tags: document.getElementById("eventTags").value.split(",").map(t => t.trim()),
+        attendees: 1
+      };
+
+      // Add event to array
+      events.push(newEvent);
+      localStorage.setItem("events", JSON.stringify(events));
+
+      // Show success message
+      const successMsg = document.getElementById("successMsg");
+      successMsg.classList.add("show");
+
+      // Reset form
+      document.getElementById("eventForm").reset();
+
+      // Redirect after 2 seconds
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 2000);
+    });
+
+    // Set minimum date to today
+    document.getElementById("eventDate").min = new Date().toISOString().split("T")[0];
+  </script>
+</body>
+</html>
